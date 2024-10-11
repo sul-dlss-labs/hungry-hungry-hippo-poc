@@ -1,0 +1,18 @@
+<div class="d-flex align-items-start my-4">
+    <div class="nav nav-pills flex-column me-3" role="tablist" aria-orientation="vertical">
+        <%= render Tab::ButtonComponent.new(label: 'Title', tab_name: :title, selected: true) %>
+        <%= render Tab::ButtonComponent.new(label: 'Abstract', tab_name: :abstract) %>
+    </div>
+    <%= form_with model: @work_form, class: 'w-100' do |form| %>
+        <div class="tab-content">
+            <%= render Tab::PaneComponent.new(tab_name: :title, selected: true, controllers: ['tab-error']) do %>
+                <%= render Form::TextFieldComponent.new(form:, field_name: :title) %>
+                <%= render Tab::NextButtonComponent.new(tab_name: :abstract) %>
+            <% end %>
+            <%= render Tab::PaneComponent.new(tab_name: :abstract, controllers: ['tab-error']) do %>
+                <%= render Form::TextAreaComponent.new(form:, field_name: :abstract) %>
+            <% end %>
+            <%= render Form::SubmitComponent.new(form:) %>
+        </div>
+    <% end %>
+</div>

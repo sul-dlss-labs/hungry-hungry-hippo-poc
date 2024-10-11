@@ -25,5 +25,10 @@ module HappyHappyHippo
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Bootstrap form error handling
+    ActionView::Base.field_error_proc = proc do |html_tag, _instance|
+      html_tag.gsub('form-control', 'form-control is-invalid').html_safe # rubocop:disable Rails/OutputSafety
+    end
   end
 end

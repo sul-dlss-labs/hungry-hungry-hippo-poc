@@ -1,2 +1,6 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+.nav-link.is-invalid {
+    color: $danger !important;
+}
