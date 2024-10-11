@@ -1,24 +1,9 @@
-# README
+# Hungry-hungry-hippo (H3)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Development
 
-Things you may want to cover:
+### Prerequisites
+* Tmux and Overmind (See https://github.com/DarthSim/overmind?tab=readme-ov-file#installation)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Development server
+`overmind start -p 3000 -f Procfile.dev`
