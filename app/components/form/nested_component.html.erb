@@ -11,7 +11,7 @@
                 <%= tag.li id: template_id, class: 'list-group-item' do %>
                     <%= tag.div data: { controller: 'form-delete', index: nested_form.options[:child_index], form_add_target: 'row' } do %>
                         <%= render form_component.new(form: nested_form) %>
-                        <button class="btn btn-secondary my-2" data-action="form-delete#delete"><%= delete_label %></button>
+                        <%= render Element::ButtonComponent.new(label: delete_label, variant: :secondary, size: :sm, classes: 'my-2', data: { action: 'click->form-delete#delete' }) %>
                     <% end %>
                 <% end %>
             <% end %>
@@ -21,12 +21,11 @@
                 <li class="list-group-item">
                     <%= tag.div data: { controller: 'form-delete', index: nested_form.options[:child_index], form_add_target: 'row' } do %>
                         <%= render form_component.new(form: nested_form) %>
-                        <button class="btn btn-secondary my-2" data-action="form-delete#delete"><%= delete_label %></button>
+                        <%= render Element::ButtonComponent.new(label: delete_label, variant: :secondary, size: :sm, classes: 'my-2', data: { action: 'click->form-delete#delete' }) %>
                     <% end %>
                 </li>
             <% end %>
         </ul>
-
-        <button class="btn btn-secondary mt-1 mb-2" data-action="form-add#add"><%= add_label %></button>
+        <%= render Element::ButtonComponent.new(label: add_label, variant: :secondary, size: :sm, classes: 'my-2', data: { action: 'click->form-add#add' }) %>
     <% end %>
 </div>

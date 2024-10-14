@@ -12,6 +12,7 @@
             <% end %>
             <%= render Tab::PaneComponent.new(tab_name: :abstract, controllers: ['tab-error']) do %>
                 <%= render Form::TextAreaComponent.new(form:, field_name: :abstract) %>
+                <%= render Tab::NextButtonComponent.new(tab_name: :authors) %>
             <% end %>
             <%= render Tab::PaneComponent.new(tab_name: :authors, controllers: ['tab-error']) do %>
                 <%= render Form::NestedComponent.new(form:, model_class: AuthorForm, field_name: :authors, form_component: Work::AuthorFormComponent) %>
