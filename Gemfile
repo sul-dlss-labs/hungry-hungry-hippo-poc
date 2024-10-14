@@ -38,6 +38,12 @@ gem 'bootsnap', require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# DLSS/domain-specific dependencies
+gem 'cocina-models'
+gem 'dor-services-client'
+gem 'dor-workflow-client'
+gem 'sdr-client'
+
 # Other gems
 gem 'config'
 gem 'view_component'

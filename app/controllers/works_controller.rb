@@ -2,22 +2,50 @@
 
 # Controller for a Work
 class WorksController < ApplicationController
-  def index
-    @work_form = session[:work]
+  before_action :find_cocina_object, only: %i[show edit]
+
+  def show
+    @cocina_object = Sdr::Repository.find(druid: params[:druid])
+    @status = Sdr::Repository.status(druid: params[:druid])
+    @status_message = status_message_for(@status)
+    @editable = @status.openable? || @status.open?
   end
 
   def new
     @work_form = WorkForm.new
+    render :form
+  end
+
+  def edit
+    @work_form = ToWorkForm::Mapper.call(cocina_object: @cocina_object)
+    unless ToWorkForm::RoundtripValidator.rountrippable?(work_form: @work_form, cocina_object: @cocina_object)
+      return render :edit_error
+    end
+
+    render :form
   end
 
   def create
     @work_form = WorkForm.new(work_params)
     # The deposit param determines whether extra validations for deposits are applied.
     if @work_form.valid?(deposit: deposit?)
-      session[:work] = @work_form
-      redirect_to works_path
+      cocina_object = ToCocina::Mapper.call(work_form: @work_form)
+      druid = Sdr::Deposit.call(cocina_object:, deposit: deposit?)
+      redirect_to work_path(druid:)
     else
-      render :new, status: :unprocessable_entity
+      render :form, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    @work_form = WorkForm.new(work_params.merge(druid: params[:druid]))
+    # The deposit param determines whether extra validations for deposits are applied.
+    if @work_form.valid?(deposit: deposit?)
+      cocina_object = ToCocina::Mapper.call(work_form: @work_form)
+      Sdr::Update.call(cocina_object:, deposit: deposit?)
+      redirect_to work_path(druid: params[:druid])
+    else
+      render :form, status: :unprocessable_entity
     end
   end
 
@@ -25,12 +53,26 @@ class WorksController < ApplicationController
 
   def work_params
     params.require(:work).permit(
-      :title, :abstract,
+      :version, :title, :abstract,
       authors_attributes: %i[first_name last_name]
     )
   end
 
   def deposit?
     params[:commit] == 'Deposit'
+  end
+
+  def find_cocina_object
+    @cocina_object = Sdr::Repository.find(druid: params[:druid])
+  end
+
+  def status_message_for(status)
+    if status.open?
+      'This is a draft.'
+    elsif status.openable?
+      'This is the last deposited version.'
+    else
+      'This work is depositing.'
+    end
   end
 end

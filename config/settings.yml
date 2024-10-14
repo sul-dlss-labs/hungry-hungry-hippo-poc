@@ -1,0 +1,14 @@
+apo: 'druid:hv992ry2431'
+
+dor_services:
+  url: http://localhost:3003
+
+sdr_api:
+  url: http://localhost:3006
+  email: h3@dlss.sul.stanford.edu
+
+workflow:
+  url: "http://localhost:3001"
+
+purl:
+  url: "https://sul-purl-stage.stanford.edu"
