@@ -17,7 +17,9 @@
             <%= render Tab::PaneComponent.new(tab_name: :authors, controllers: ['tab-error']) do %>
                 <%= render Form::NestedComponent.new(form:, model_class: AuthorForm, field_name: :authors, form_component: Work::AuthorFormComponent) %>
             <% end %>
-            <%= render Form::SubmitComponent.new(form:) %>
+            <%= render Form::SubmitComponent.new(form:, label: 'Save draft', variant: :secondary) %>
+            <%# Note when changing the label that it is ultimately used by the controller to determine when a deposit. %>
+            <%= render Form::SubmitComponent.new(form:, label: 'Deposit') %>
         </div>
     <% end %>
 </div>

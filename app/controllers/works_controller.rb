@@ -12,7 +12,8 @@ class WorksController < ApplicationController
 
   def create
     @work_form = WorkForm.new(work_params)
-    if @work_form.valid?
+    # The deposit param determines whether extra validations for deposits are applied.
+    if @work_form.valid?(deposit: deposit?)
       session[:work] = @work_form
       redirect_to works_path
     else
@@ -27,5 +28,9 @@ class WorksController < ApplicationController
       :title, :abstract,
       authors_attributes: %i[first_name last_name]
     )
+  end
+
+  def deposit?
+    params[:commit] == 'Deposit'
   end
 end

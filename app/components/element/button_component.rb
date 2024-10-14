@@ -15,31 +15,12 @@ module Element
 
     def call
       tag.buttons(
-        class: classes,
-        # id: "#{tab_name}-tab",
-        # data: { bs_toggle: 'tab', bs_target: "##{pane_id}" },
+        class: Element::ButtonSupport.classes(variant: @variant, size: @size, classes: @classes),
         type: 'button',
-        # role: 'tab',
-        # 'aria-controls': pane_id,
-        # 'aria-selected': selected
         **options
       ) do
         label
       end
-    end
-
-    private
-
-    def classes
-      ComponentSupport.merge_classes('btn', variant_class, size_class, @classes)
-    end
-
-    def variant_class
-      @variant ? "btn-#{@variant}" : nil
-    end
-
-    def size_class
-      @size ? "btn-#{@size}" : nil
     end
   end
 end

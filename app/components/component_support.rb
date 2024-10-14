@@ -8,7 +8,7 @@ class ComponentSupport
   # @return [String] The merged classes.
   def self.merge_classes(*args)
     args.flat_map do |arg|
-      Array(arg.split)
+      Array(arg&.split)
     end.uniq.join(' ')
   end
 end
