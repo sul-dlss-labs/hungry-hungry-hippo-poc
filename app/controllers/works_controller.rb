@@ -23,6 +23,9 @@ class WorksController < ApplicationController
   private
 
   def work_params
-    params.require(:work).permit(:title, :abstract)
+    params.require(:work).permit(
+      :title, :abstract,
+      authors_attributes: %i[first_name last_name]
+    )
   end
 end

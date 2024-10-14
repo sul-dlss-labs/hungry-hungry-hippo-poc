@@ -1,0 +1,32 @@
+<div class="card my-3">
+    <div class="card-header">
+        <%= header_label %>
+    </div>
+    <%= tag.div id: body_id, class: 'card-body', data: { controller: 'form-add' } do %>
+        <%= body_section %>
+        <%= render Form::InvalidFeedbackComponent.new(field_name:, form:, classes: 'd-block') %>
+
+        <template data-form-add-target="template">
+            <%= form.fields_for field_name, model_class.new, child_index: 'NEW_RECORD' do |nested_form| %>
+                <%= tag.li id: template_id, class: 'list-group-item' do %>
+                    <%= tag.div data: { controller: 'form-delete', index: nested_form.options[:child_index], form_add_target: 'row' } do %>
+                        <%= render form_component.new(form: nested_form) %>
+                        <button class="btn btn-secondary my-2" data-action="form-delete#delete"><%= delete_label %></button>
+                    <% end %>
+                <% end %>
+            <% end %>
+        </template>
+        <ul class="list-group list-group-flush" data-form-add-target="rowContainer">
+            <%= form.fields_for field_name do |nested_form| %>
+                <li class="list-group-item">
+                    <%= tag.div data: { controller: 'form-delete', index: nested_form.options[:child_index], form_add_target: 'row' } do %>
+                        <%= render form_component.new(form: nested_form) %>
+                        <button class="btn btn-secondary my-2" data-action="form-delete#delete"><%= delete_label %></button>
+                    <% end %>
+                </li>
+            <% end %>
+        </ul>
+
+        <button class="btn btn-secondary mt-1 mb-2" data-action="form-add#add"><%= add_label %></button>
+    <% end %>
+</div>

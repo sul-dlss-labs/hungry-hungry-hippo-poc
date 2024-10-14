@@ -30,5 +30,8 @@ module HappyHappyHippo
     ActionView::Base.field_error_proc = proc do |html_tag, _instance|
       html_tag.gsub('form-control', 'form-control is-invalid').html_safe # rubocop:disable Rails/OutputSafety
     end
+
+    # See https://viewcomponent.org/known_issues.html#issues-resolved-by-the-optional-capture-compatibility-patch
+    config.view_component.capture_compatibility_patch_enabled = true
   end
 end

@@ -2,6 +2,7 @@
     <div class="nav nav-pills flex-column me-3" role="tablist" aria-orientation="vertical">
         <%= render Tab::ButtonComponent.new(label: 'Title', tab_name: :title, selected: true) %>
         <%= render Tab::ButtonComponent.new(label: 'Abstract', tab_name: :abstract) %>
+        <%= render Tab::ButtonComponent.new(label: 'Authors', tab_name: :authors) %>
     </div>
     <%= form_with model: @work_form, class: 'w-100' do |form| %>
         <div class="tab-content">
@@ -11,6 +12,9 @@
             <% end %>
             <%= render Tab::PaneComponent.new(tab_name: :abstract, controllers: ['tab-error']) do %>
                 <%= render Form::TextAreaComponent.new(form:, field_name: :abstract) %>
+            <% end %>
+            <%= render Tab::PaneComponent.new(tab_name: :authors, controllers: ['tab-error']) do %>
+                <%= render Form::NestedComponent.new(form:, model_class: AuthorForm, field_name: :authors, form_component: Work::AuthorFormComponent) %>
             <% end %>
             <%= render Form::SubmitComponent.new(form:) %>
         </div>
