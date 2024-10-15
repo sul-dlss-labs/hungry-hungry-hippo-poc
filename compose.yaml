@@ -57,6 +57,7 @@ services:
       SETTINGS__VERSION_SERVICE__SYNC_WITH_PRESERVATION: 'false'
       SETTINGS__REDIS_URL: redis://redis:6379/
       SETTINGS__SOLR__ENABLED: 'false'
+      SETTINGS__RELEASE__PURL_BASE_URL: https://sul-purl-stage.stanford.edu
     depends_on:
       - db
       - suri
