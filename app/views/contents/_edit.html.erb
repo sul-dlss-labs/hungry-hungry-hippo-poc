@@ -1,0 +1,35 @@
+<%= turbo_frame_tag content, 'edit' do %>
+    <%= render Element::CardComponent.new(header_label: 'Upload a ZIP file', classes: 'mb-2') do |component| %>
+        <% component.with_body do %>    
+            <%= render Element::HelpTextComponent.new do %>
+                Replaces all files that have already been uploaded.
+            <% end %>
+            <%= form_with model: ContentForm.new(id: content.id) do |form| %>
+                <%= render Form::FileFieldComponent.new(field_name: :zip_file, form:, required: true, accept: ".zip") %>
+                <%= render Form::SubmitComponent.new(form:, label: 'Upload') %>
+            <% end %>
+        <% end %>
+    <% end %>
+    <%= render Element::CardComponent.new(header_label: 'Upload files', classes: 'mb-2') do |component| %>
+        <% component.with_body do %>    
+            <%= render Element::HelpTextComponent.new do %>
+                Adds to the files that have already been uploaded.
+            <% end %>
+            <%= form_with model: ContentForm.new(id: content.id) do |form| %>
+                <%= render Form::FileFieldComponent.new(field_name: :files, form:, required: true, multiple: true) %>
+                <%= render Form::SubmitComponent.new(form:, label: 'Upload') %>
+            <% end %>
+        <% end %>
+    <% end %>
+    <%= render Element::CardComponent.new(header_label: 'Upload directory', classes: 'mb-3') do |component| %>
+        <% component.with_body do %>    
+            <%= render Element::HelpTextComponent.new do %>
+                Adds to the files that have already been uploaded.
+            <% end %>
+            <%= form_with model: ContentForm.new(id: content.id) do |form| %>
+                <%= render Form::FileFieldComponent.new(field_name: :files, form:, required: true, multiple: true, directory: true, input_options: {data: {controller: 'upload-directory', action: 'upload-directory#patch'}}) %>
+                <%= render Form::SubmitComponent.new(form:, label: 'Upload') %>
+            <% end %>
+        <% end %>
+    <% end %>    
+<% end %>

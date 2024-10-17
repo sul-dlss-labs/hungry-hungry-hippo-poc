@@ -14,4 +14,12 @@ Rails.application.routes.draw do
   root "works#new"
 
   resources :works, only: [:new, :create, :show, :edit, :update], param: :druid
+
+  resources :contents, only: [:edit, :update, :show] do
+    member do
+      get "wait"
+    end
+  end
+
+  resources :content_files, only: [:edit, :update, :destroy, :show]
 end

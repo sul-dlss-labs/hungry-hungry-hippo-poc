@@ -2,7 +2,8 @@
 
 # Controller for a Work
 class WorksController < ApplicationController
-  before_action :find_cocina_object, only: %i[show edit]
+  before_action :set_cocina_object, only: %i[show edit]
+  before_action :set_content, only: %i[create]
 
   def show
     @cocina_object = Sdr::Repository.find(druid: params[:druid])
@@ -13,6 +14,7 @@ class WorksController < ApplicationController
 
   def new
     @work_form = WorkForm.new
+    @content = Content.create!
     render :form
   end
 
@@ -62,8 +64,12 @@ class WorksController < ApplicationController
     params[:commit] == 'Deposit'
   end
 
-  def find_cocina_object
+  def set_cocina_object
     @cocina_object = Sdr::Repository.find(druid: params[:druid])
+  end
+
+  def set_content
+    @content = Content.find(params[:work][:content_id])
   end
 
   def status_message_for(status)

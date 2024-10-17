@@ -1,8 +1,5 @@
-<div class="card my-3">
-    <div class="card-header">
-        <%= header_label %>
-    </div>
-    <%= tag.div id: body_id, class: 'card-body', data: { controller: 'form-add' } do %>
+<%= render Element::CardComponent.new(header_label:, classes: 'my-3') do |component| %>
+    <% component.with_body(id: body_id, data: { controller: 'form-add' }) do %>    
         <%= body_section %>
         <%= render Form::InvalidFeedbackComponent.new(field_name:, form:, classes: 'd-block') %>
 
@@ -28,4 +25,4 @@
         </ul>
         <%= render Element::ButtonComponent.new(label: add_label, variant: :secondary, size: :sm, classes: 'my-2', data: { action: 'click->form-add#add' }) %>
     <% end %>
-</div>
+<% end %>

@@ -1,0 +1,3 @@
+<%= turbo_frame_tag @content, 'edit' do %>
+    <%= render Element::SpinnerComponent.new(message: 'Processing...', variant: :info, classes: 'my-2') %>
+<% end %>

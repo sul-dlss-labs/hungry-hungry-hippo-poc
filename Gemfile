@@ -46,6 +46,10 @@ gem 'sdr-client'
 
 # Other gems
 gem 'config'
+gem 'kaminari' # Pagination
+gem 'rubyzip'
+gem 'solid_cable'
+gem 'solid_queue'
 gem 'view_component'
 
 group :development, :test do
