@@ -42,7 +42,8 @@ gem 'bootsnap', require: false
 gem 'cocina-models'
 gem 'dor-services-client'
 gem 'dor-workflow-client'
-gem 'sdr-client'
+# gem 'sdr-client'
+gem 'sdr-client', github: 'sul-dlss/sdr-client', branch: 'upload_single'
 
 # Other gems
 gem 'config'

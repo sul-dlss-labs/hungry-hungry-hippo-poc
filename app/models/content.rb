@@ -3,6 +3,7 @@
 # Model for a Work's content (files)
 class Content < ApplicationRecord
   has_many :content_files, dependent: :destroy
+  has_one_attached :zip_file
 
   def broadcast
     broadcast_replace_to ActionView::RecordIdentifier.dom_id(self),

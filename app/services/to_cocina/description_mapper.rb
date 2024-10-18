@@ -19,7 +19,6 @@ module ToCocina
 
       else
         Cocina::Models::RequestDescription.new(params)
-
       end
     end
 

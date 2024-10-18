@@ -13,8 +13,8 @@ class WorksController < ApplicationController
   end
 
   def new
-    @work_form = WorkForm.new
     @content = Content.create!
+    @work_form = WorkForm.new(content_id: @content.id)
     render :form
   end
 
@@ -31,9 +31,15 @@ class WorksController < ApplicationController
     @work_form = WorkForm.new(work_params)
     # The deposit param determines whether extra validations for deposits are applied.
     if @work_form.valid?(deposit: deposit?)
-      cocina_object = ToCocina::Mapper.call(work_form: @work_form)
-      druid = Sdr::Deposit.call(cocina_object:, deposit: deposit?)
-      redirect_to work_path(druid:)
+      # There is no druid, so assigning a temporary identifier
+      wait_id = SecureRandom.uuid
+      DepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
+      redirect_to wait_works_path(id: wait_id)
+      # content = Content.find(params[:work][:content_id])
+      # ContentDigester.call(content:) # Add MD5 checksums to content files
+      # cocina_object = ToCocina::Mapper.call(work_form: @work_form, content:)
+      # druid = Sdr::Deposit.call(cocina_object:, deposit: deposit?, content:)
+      # redirect_to work_path(druid:)
     else
       render :form, status: :unprocessable_entity
     end
@@ -51,11 +57,13 @@ class WorksController < ApplicationController
     end
   end
 
+  def wait; end
+
   private
 
   def work_params
     params.require(:work).permit(
-      :version, :title, :abstract,
+      :version, :title, :abstract, :content_id,
       authors_attributes: %i[first_name last_name]
     )
   end

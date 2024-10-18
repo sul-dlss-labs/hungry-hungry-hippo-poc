@@ -9,7 +9,7 @@
     </div>
     <%= form_with model: @work_form, class: 'w-100' do |form| %>
         <%= form.hidden_field :version %>
-        <%= form.hidden_field :content_id, value: @content.id if @content%>
+        <%= form.hidden_field :content_id %>
         <div class="tab-content">
             <%= render Tab::PaneComponent.new(tab_name: :title, selected: true, controllers: ['tab-error']) do %>
                 <%= render Form::TextFieldComponent.new(form:, field_name: :title) %>

@@ -9,6 +9,8 @@ class WorkForm < ApplicationForm
     druid.present?
   end
 
+  attribute :content_id, :integer
+
   attribute :version, :integer, default: 1
 
   attribute :title, :string
@@ -35,5 +37,19 @@ class WorkForm < ApplicationForm
         errors.add("authors.#{authors.index(author)}.#{error.attribute}", error.message)
       end
     end
+  end
+
+  # This is for serialization / deserialization
+  # Similar will need to be added for other nested model forms.
+  # j = work_form.to_json
+  # new_work_form = WorkForm.new
+  # new_work_form.attributes = j
+  def attributes=(attrs)
+    if attrs['authors']
+      self.authors = attrs.delete('authors').map do |author_attrs|
+        AuthorForm.new.from_json(author_attrs.to_json)
+      end
+    end
+    super
   end
 end

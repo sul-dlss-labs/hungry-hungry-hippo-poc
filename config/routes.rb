@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "works#new"
 
-  resources :works, only: [:new, :create, :show, :edit, :update], param: :druid
+  resources :works, only: [:new, :create, :show, :edit, :update], param: :druid do
+    collection do
+      get "wait", param: :id
+    end
+  end
 
   resources :contents, only: [:edit, :update, :show] do
     member do

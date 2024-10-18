@@ -8,9 +8,11 @@ module ToCocina
     end
 
     # @param [WorkForm] work_form
+    # @param [Content] content
     # @param [source_id] source_id
-    def initialize(work_form:, source_id: nil)
+    def initialize(work_form:, content:, source_id: nil)
       @work_form = work_form
+      @content = content
       @source_id = source_id || "h3:object-#{Time.zone.now.iso8601}"
     end
 
@@ -24,7 +26,7 @@ module ToCocina
 
     private
 
-    attr_reader :work_form, :source_id
+    attr_reader :work_form, :source_id, :content
 
     def params
       {
@@ -36,7 +38,7 @@ module ToCocina
         access: { view: 'world', download: 'world' },
         identification: { sourceId: source_id },
         administrative: { hasAdminPolicy: Settings.apo },
-        structural: { contains: [] }
+        structural: ToCocina::StructuralMapper.call(work_form:, content:)
       }.compact
     end
   end

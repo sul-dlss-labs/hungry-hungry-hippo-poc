@@ -1,0 +1,2 @@
+<%= turbo_stream_from params[:id] %>
+<%= render Element::SpinnerComponent.new(message: 'Processing...', variant: :info, classes: 'my-2') %>
