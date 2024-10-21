@@ -12,3 +12,5 @@ workflow:
 
 purl:
   url: "https://sul-purl-stage.stanford.edu"
+
+staging_location: 'tmp/workspace'

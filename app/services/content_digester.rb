@@ -15,9 +15,9 @@ class ContentDigester
     @zip_file = Zip::File.open(zip_filepath) if content.zip_file.attached?
     begin
       content.content_files.each do |content_file|
-        next if content_file.md5_digest.present?
+        next if content_file.md5_digest.present? && content_file.sha1_digest.present?
 
-        content_file.update(md5_digest: md5_for(content_file))
+        content_file.update!(digests_for(content_file))
       end
     ensure
       zip_file&.close
@@ -28,21 +28,23 @@ class ContentDigester
 
   attr_reader :content, :zip_file
 
-  def md5_for(content_file)
-    if content_file.attached?
-      base64_to_hex(content_file.file.checksum)
-    else
-      md5_from_zip_file(content_file)
-    end
+  def digests_for(content_file)
+    stream = if content_file.attached?
+               File.open(ActiveStorageSupport.filepath_for_blob(content_file.file.blob))
+             else
+               zip_file.get_input_stream(content_file.filename)
+             end
+    digests_from_stream(stream)
   end
 
-  def md5_from_zip_file(content_file)
+  def digests_from_stream(stream)
     md5 = Digest::MD5.new
-    input_stream = zip_file.get_input_stream(content_file.filename)
-    while (buffer = input_stream.read(4096))
+    sha1 = Digest::SHA1.new
+    while (buffer = stream.read(4096))
       md5.update(buffer)
+      sha1.update(buffer)
     end
-    md5.hexdigest
+    { md5_digest: md5.hexdigest, sha1_digest: sha1.hexdigest }
   end
 
   def base64_to_hex(base64_string)
@@ -51,6 +53,6 @@ class ContentDigester
   end
 
   def zip_filepath
-    ActiveStorage::Blob.service.path_for(content.zip_file.blob.key)
+    ActiveStorageSupport.filepath_for_blob(content.zip_file.blob)
   end
 end

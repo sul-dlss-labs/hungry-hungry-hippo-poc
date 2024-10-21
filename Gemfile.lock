@@ -160,6 +160,7 @@ GEM
       nokogiri (~> 1.6)
       zeitwerk (~> 2.1)
     drb (2.2.1)
+    druid-tools (3.0.0)
     dry-core (1.0.1)
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
@@ -460,6 +461,7 @@ DEPENDENCIES
   debug
   dor-services-client
   dor-workflow-client
+  druid-tools
   importmap-rails
   jbuilder
   kaminari

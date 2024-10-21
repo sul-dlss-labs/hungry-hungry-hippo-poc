@@ -16,9 +16,10 @@ module ToCocina
       @source_id = source_id || "h3:object-#{Time.zone.now.iso8601}"
     end
 
+    # @return [Cocina::Models::DROWithMetadata, Cocina::Models::RequestDRO]
     def call
-      if work_form.druid.present?
-        Cocina::Models.build(params)
+      if work_form.persisted?
+        Cocina::Models.with_metadata(Cocina::Models.build(params), work_form.lock)
       else
         Cocina::Models.build_request(params)
       end

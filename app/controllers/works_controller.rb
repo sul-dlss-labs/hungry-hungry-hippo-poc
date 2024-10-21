@@ -35,7 +35,8 @@ class WorksController < ApplicationController
     # The deposit param determines whether extra validations for deposits are applied.
     if @work_form.valid?(deposit: deposit?)
       wait_id = SecureRandom.uuid
-      DepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
+      # DepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
+      DirectDepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
       redirect_to wait_works_path(id: wait_id)
     else
       render :form, status: :unprocessable_entity
@@ -47,7 +48,8 @@ class WorksController < ApplicationController
     # The deposit param determines whether extra validations for deposits are applied.
     if @work_form.valid?(deposit: deposit?)
       wait_id = SecureRandom.uuid
-      DepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
+      # DepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
+      DirectDepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
       redirect_to wait_works_path(id: wait_id)
     else
       render :form, status: :unprocessable_entity
@@ -60,7 +62,7 @@ class WorksController < ApplicationController
 
   def work_params
     params.require(:work).permit(
-      :version, :title, :abstract, :content_id,
+      :version, :title, :abstract, :content_id, :lock,
       authors_attributes: %i[first_name last_name]
     )
   end
