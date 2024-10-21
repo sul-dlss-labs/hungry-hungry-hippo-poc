@@ -41,8 +41,6 @@ class ContentsController < ApplicationController
 
   def update_zip_file
     @content.zip_file.attach(params[:content][:zip_file])
-    # zip_file = params[:content][:zip_file]
-    # zip_blob = ActiveStorage::Blob.create_and_upload!(io: zip_file, filename: zip_file.original_filename)
     ZipReadJob.perform_later(content: @content)
   end
 

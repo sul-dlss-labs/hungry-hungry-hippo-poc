@@ -6,7 +6,7 @@ class DepositJob < ApplicationJob
 
   def perform(work_form:, deposit:, wait_id:)
     content = Content.find(work_form.content_id)
-    ContentDigester.call(content:) # Add MD5 checksums to content files
+    ContentAnalyzer.call(content:) # Add checksums, mime type to content files
     cocina_object = ToCocina::Mapper.call(work_form:, content:)
     druid = Sdr::Deposit.call(cocina_object:, content:, deposit:)
 
