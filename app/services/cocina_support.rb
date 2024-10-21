@@ -26,8 +26,4 @@ class CocinaSupport
   def self.title_for(cocina_object:)
     cocina_object.description.title.first.value
   end
-
-  # def self.collection_druid_for(cocina_object:)
-  #   cocina_object.structural&.isMemberOf&.first
-  # end
 end

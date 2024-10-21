@@ -17,7 +17,7 @@ class ContentDigester
       content.content_files.each do |content_file|
         next if content_file.md5_digest.present?
 
-        content_file.md5_digest = md5_for(content_file)
+        content_file.update(md5_digest: md5_for(content_file))
       end
     ensure
       zip_file&.close

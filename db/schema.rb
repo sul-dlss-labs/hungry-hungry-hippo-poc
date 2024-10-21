@@ -44,6 +44,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_15_203427) do
     t.string "filename", null: false
     t.string "label", null: false
     t.string "external_identifier"
+    t.string "fileset_external_identifier"
     t.integer "size"
     t.string "mime_type"
     t.string "md5_digest"

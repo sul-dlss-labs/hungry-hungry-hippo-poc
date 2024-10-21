@@ -5,6 +5,7 @@ class CreateContentFiles < ActiveRecord::Migration[7.2]
       t.string :filename, null: false
       t.string :label, null: false
       t.string :external_identifier
+      t.string :fileset_external_identifier
       t.integer :size
       t.string :mime_type
       t.string :md5_digest

@@ -3,7 +3,7 @@
 # Controller for a Work
 class WorksController < ApplicationController
   before_action :set_cocina_object, only: %i[show edit]
-  before_action :set_content, only: %i[create]
+  before_action :set_content, only: %i[create update]
 
   def show
     @cocina_object = Sdr::Repository.find(druid: params[:druid])
@@ -20,7 +20,10 @@ class WorksController < ApplicationController
 
   def edit
     @work_form = ToWorkForm::Mapper.call(cocina_object: @cocina_object)
-    unless ToWorkForm::RoundtripValidator.rountrippable?(work_form: @work_form, cocina_object: @cocina_object)
+    @content = ContentBuilder.call(cocina_object: @cocina_object)
+    @work_form.content_id = @content.id
+    unless ToWorkForm::RoundtripValidator.rountrippable?(work_form: @work_form, content: @content,
+                                                         cocina_object: @cocina_object)
       return render :edit_error
     end
 
@@ -31,15 +34,9 @@ class WorksController < ApplicationController
     @work_form = WorkForm.new(work_params)
     # The deposit param determines whether extra validations for deposits are applied.
     if @work_form.valid?(deposit: deposit?)
-      # There is no druid, so assigning a temporary identifier
       wait_id = SecureRandom.uuid
       DepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
       redirect_to wait_works_path(id: wait_id)
-      # content = Content.find(params[:work][:content_id])
-      # ContentDigester.call(content:) # Add MD5 checksums to content files
-      # cocina_object = ToCocina::Mapper.call(work_form: @work_form, content:)
-      # druid = Sdr::Deposit.call(cocina_object:, deposit: deposit?, content:)
-      # redirect_to work_path(druid:)
     else
       render :form, status: :unprocessable_entity
     end
@@ -49,9 +46,9 @@ class WorksController < ApplicationController
     @work_form = WorkForm.new(work_params.merge(druid: params[:druid]))
     # The deposit param determines whether extra validations for deposits are applied.
     if @work_form.valid?(deposit: deposit?)
-      cocina_object = ToCocina::Mapper.call(work_form: @work_form)
-      Sdr::Update.call(cocina_object:, deposit: deposit?)
-      redirect_to work_path(druid: params[:druid])
+      wait_id = SecureRandom.uuid
+      DepositJob.perform_later(wait_id:, work_form: @work_form, deposit: deposit?)
+      redirect_to wait_works_path(id: wait_id)
     else
       render :form, status: :unprocessable_entity
     end

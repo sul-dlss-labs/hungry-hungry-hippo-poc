@@ -21,6 +21,7 @@
             <% end %>
             <%= render Tab::PaneComponent.new(tab_name: :authors, controllers: ['tab-error']) do %>
                 <%= render Form::NestedComponent.new(form:, model_class: AuthorForm, field_name: :authors, form_component: Work::AuthorFormComponent) %>
+                <%= render Tab::NextButtonComponent.new(tab_name: :files) %>
             <% end %>
             <%= render Tab::PaneComponent.new(tab_name: :files) do %>
                 <%= turbo_frame_tag @content, 'edit', src: edit_content_path(@content) do %>

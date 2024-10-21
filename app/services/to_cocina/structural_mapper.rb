@@ -40,13 +40,11 @@ module ToCocina
 
     def fileset_params_for(content_file)
       # one file per fileset
-      # cocina_file = fileset&.structural&.contains&.first
-      # resource_id = SecureRandom.uuid if cocina_file.blank?
       {
         type: Cocina::Models::FileSetType.file,
         version: work_form.version,
         label: content_file.label,
-        externalIdentifier: external_identifier_for(content_file),
+        externalIdentifier: fileset_external_identifier_for(content_file),
         structural: {
           contains: [file_params_for(content_file)]
         }
@@ -64,18 +62,29 @@ module ToCocina
         hasMimeType: content_file.mime_type,
         hasMessageDigests: message_digests_for(content_file),
         size: content_file.size,
-        externalIdentifier: content_file.external_identifier
+        externalIdentifier: file_external_identifier_for(content_file)
       }.compact
     end
 
-    def external_identifier_for(content_file)
+    def fileset_external_identifier_for(content_file)
       if new_object?
         nil
-      elsif content_file.external_identifier.present?
-        content_file.external_identifier
+      elsif content_file.fileset_external_identifier.present?
+        content_file.fileset_external_identifier
       else
         # see https://github.com/sul-dlss/dor-services-app/blob/main/app/services/cocina/id_generator.rb
         "#{ID_NAMESPACE}/fileSet/#{bare_druid}-#{SecureRandom.uuid}"
+      end
+    end
+
+    def file_external_identifier_for(content_file)
+      if new_object?
+        nil
+      elsif content_file.fileset_external_identifier.present?
+        content_file.external_identifier
+      else
+        # see https://github.com/sul-dlss/dor-services-app/blob/main/app/services/cocina/id_generator.rb
+        "#{ID_NAMESPACE}/file/#{bare_druid}-#{SecureRandom.uuid}"
       end
     end
 
