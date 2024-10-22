@@ -8,6 +8,8 @@ namespace :development do
     client = Dor::Workflow::Client.new(url: Settings.workflow.url)
     client.skip_all(druid: args[:druid], workflow: 'accessionWF', note: 'Testing')
 
+    Turbo::StreamsChannel.broadcast_refresh_to args[:druid], 'show', attributes: { method: :morph }
+
     puts "Completed accessionWF for #{args[:druid]}"
   end
 end

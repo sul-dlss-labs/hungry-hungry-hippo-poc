@@ -26,4 +26,16 @@ class CocinaSupport
   def self.title_for(cocina_object:)
     cocina_object.description.title.first.value
   end
+
+  def self.update_version_and_lock(cocina_object:, version:, lock:)
+    params = Cocina::Models.without_metadata(cocina_object).to_h
+    params['version'] = version
+    params[:structural][:contains].each do |file_set_params|
+      file_set_params[:version] = version
+      file_set_params[:structural][:contains].each do |file_params|
+        file_params[:version] = version
+      end
+    end
+    Cocina::Models.with_metadata(Cocina::Models.build(params), lock)
+  end
 end
