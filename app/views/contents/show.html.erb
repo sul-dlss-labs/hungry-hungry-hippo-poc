@@ -1,1 +1,1 @@
-<%= render partial: 'show', locals: { content: @content, content_files: @content.content_files.page(params[:page]) } %>
+<%= render partial: 'show', locals: { content: @content, content_files: @content_files, page: params[:page], search_form: @search_form } %>

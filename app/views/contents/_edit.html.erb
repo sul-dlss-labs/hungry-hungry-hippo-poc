@@ -6,7 +6,7 @@
             <% end %>
             <%= form_with model: ContentForm.new(id: content.id) do |form| %>
                 <%= render Form::FileFieldComponent.new(field_name: :zip_file, form:, required: true, accept: ".zip") %>
-                <%= render Form::SubmitComponent.new(form:, label: 'Upload') %>
+                <%= render Form::SubmitComponent.new(form:, label: 'Upload', classes: 'mt-2') %>
             <% end %>
         <% end %>
     <% end %>
@@ -17,7 +17,7 @@
             <% end %>
             <%= form_with model: ContentForm.new(id: content.id) do |form| %>
                 <%= render Form::FileFieldComponent.new(field_name: :files, form:, required: true, multiple: true) %>
-                <%= render Form::SubmitComponent.new(form:, label: 'Upload') %>
+                <%= render Form::SubmitComponent.new(form:, label: 'Upload', classes: 'mt-2') %>
             <% end %>
         <% end %>
     <% end %>
@@ -28,7 +28,7 @@
             <% end %>
             <%= form_with model: ContentForm.new(id: content.id) do |form| %>
                 <%= render Form::FileFieldComponent.new(field_name: :files, form:, required: true, multiple: true, directory: true, input_options: {data: {controller: 'upload-directory', action: 'upload-directory#patch'}}) %>
-                <%= render Form::SubmitComponent.new(form:, label: 'Upload') %>
+                <%= render Form::SubmitComponent.new(form:, label: 'Upload', classes: 'mt-2') %>
             <% end %>
         <% end %>
     <% end %>    

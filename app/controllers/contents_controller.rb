@@ -3,7 +3,11 @@
 # Controller for a Work contents (files)
 class ContentsController < ApplicationController
   before_action :set_content, only: %i[edit update wait show]
-  def show; end
+  def show
+    @search_form = SearchForm.new(search_params)
+    @content_files = @content.content_files.page(params[:page])
+    @content_files = @content_files.where('filename LIKE ?', "%#{@search_form.query}%") if @search_form.query.present?
+  end
 
   def edit; end
 
@@ -51,5 +55,9 @@ class ContentsController < ApplicationController
                                          size: file.size, label: file.original_filename)
       content_file.file.attach(file)
     end
+  end
+
+  def search_params
+    params.fetch(:search, {}).permit(:query)
   end
 end

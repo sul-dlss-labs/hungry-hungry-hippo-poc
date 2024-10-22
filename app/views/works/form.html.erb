@@ -33,9 +33,9 @@
                     <%= render Element::SpinnerComponent.new %>
                 <% end %>
             <% end %>
-            <%= render Form::SubmitComponent.new(form:, label: 'Save draft', variant: :secondary) %>
+            <%= render Form::SubmitComponent.new(form:, label: 'Save draft', variant: :secondary, classes: 'mt-2') %>
             <%# Note when changing the label that it is ultimately used by the controller to determine when a deposit. %>
-            <%= render Form::SubmitComponent.new(form:, label: 'Deposit') %>
+            <%= render Form::SubmitComponent.new(form:, label: 'Deposit', classes: 'mt-2') %>
         </div>
     <% end %>
 </div>

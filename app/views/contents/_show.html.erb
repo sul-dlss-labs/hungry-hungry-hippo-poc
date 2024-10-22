@@ -1,20 +1,38 @@
 <%= turbo_frame_tag content, 'show' do %>
-    <% if content_files.empty? %>
+    <% if content_files.empty? && local_assigns[:query].nil? %>
         <%= render Element::AlertComponent.new(message: 'No files uploaded.', variant: :secondary) %>
     <% else %>
-        <table class="table table-hover table-sm">
-            <thead>
-                <tr>
-                    <th scope="col">Filename</th>
-                    <th scope="col">Size</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% content_files.each do |content_file| %>
-                    <%= render partial: 'content_files/show', locals: { content_file: } %>
-                <% end %>                
-            </tbody>
-        </table>
-        <%= paginate content_files, params: {controller: 'contents', action: 'show', id: content.id} %>
+            <%= form_with model: local_assigns[:search_form] || SearchForm.new, url: content_path(content, page: local_assigns[:page]), method: :get do |form| %>
+        <div class="d-flex">
+                <div class="input-group me-2" style="width: auto;">
+                    <%= render Form::TextFieldComponent.new(form:, field_name: :query, required: true, hidden_label: true) %>
+                    <%= render Form::SubmitComponent.new(form:, variant: :secondary, label: 'Search') %>
+                </div>
+                            <% if local_assigns[:search_form]&.query.present? %>
+                <div>
+                    <%= render Element::ButtonLinkComponent.new(path: content_path(content, page: local_assigns[:page]), label: 'Clear', variant: :'outline-secondary') %>
+                </div>
+            <% end %>
+
+                        </div>
+            <% end %>
+        <% if content_files.empty? %>            
+            <%= render Element::AlertComponent.new(message: 'No files match.', variant: :secondary) %>
+        <% else %>
+            <table class="table table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Filename</th>
+                        <th scope="col">Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% content_files.each do |content_file| %>
+                        <%= render partial: 'content_files/show', locals: { content_file: } %>
+                    <% end %>                
+                </tbody>
+            </table>
+            <%= paginate content_files, params: {controller: 'contents', action: 'show', id: content.id} %>
+        <% end %>
     <% end %>
 <% end %>
